@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
+
+using namespace std;
+
+// Función para realizar la búsqueda binaria en el vector y contar las ocurrencias en el rango.
+int contarEnRango(const vector<int>& vec, int valor, int inicio, int fin) {
+    auto lower = lower_bound(vec.begin(), vec.end(), inicio) - vec.begin();
+    auto upper = upper_bound(vec.begin(), vec.end(), fin) - vec.begin();
+    return upper - lower;
+}
+
+int main() {
+    int N;
+    cin >> N;
+    
+    map<int, vector<int>> calificaciones; // Mapa de calificaciones a sus índices
+    string instruccion;
+    int c, i, j;
+
+    for(int n = 1; n <= N; ++n) {
+        cin >> instruccion;
+        if(instruccion == "REGISTRA") {
+            cin >> c;
+            calificaciones[c].push_back(n); // Guarda el índice n (basado en 1)
+        } else if(instruccion == "CUENTA") {
+            cin >> c >> i >> j;
+            if(calificaciones.count(c) == 0) {
+                cout << "0\n";
+                continue;
+            }
+            cout << contarEnRango(calificaciones[c], i, j) << '\n';
+        }
+    }
+    return 0;
+}
