@@ -1,1 +1,60 @@
+#include <iostream>
+#include <list>
+#include <string>
 
+template <typename T>
+class Cola {
+private:
+    std::list<T> elementos;
+
+public:
+    void encolar(const T& elemento) {
+        elementos.push_back(elemento);
+    }
+
+    void desencolar() {
+        if (!elementos.empty()) {
+            elementos.pop_front();
+        }
+    }
+
+    T frente() const {
+        return elementos.front();
+    }
+
+    bool estaVacia() const {
+        return elementos.empty();
+    }
+};
+
+int main() {
+    std::cin.tie(nullptr);
+    std::ios_base::sync_with_stdio(false);
+
+    int n;
+    std::cin >> n;
+
+    Cola<std::string> cola_alumnos;
+    Cola<std::string> cola_trabajadores;
+
+    for (int i = 0; i < n; ++i) {
+        std::string evento, nombre;
+        std::cin >> evento >> nombre;
+
+        if (evento == "LLEGA_ALUMNO") {
+            cola_alumnos.encolar(nombre);
+        } else if (evento == "LLEGA_TRABAJADOR") {
+            cola_trabajadores.encolar(nombre);
+        } else if (evento == "ATIENDE") {
+            if (!cola_trabajadores.estaVacia()) {
+                std::cout << cola_trabajadores.frente() << '\n';
+                cola_trabajadores.desencolar();
+            } else if (!cola_alumnos.estaVacia()) {
+                std::cout << cola_alumnos.frente() << '\n';
+                cola_alumnos.desencolar();
+            }
+        }
+    }
+
+    return 0;
+}
